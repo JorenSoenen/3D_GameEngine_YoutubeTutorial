@@ -28,10 +28,7 @@ dx3d::Window::Window(const WindowDesc& desc)
 	static const auto windowClassId = std::invoke(registerWindowClassFunction);
 	
 
-	if (!windowClassId) {
-		GetLogger().Log(Logger::LogLevel::Error, "RegisterClassEx failed.");
-		throw std::runtime_error("RegisterClassEx failed.");
-	}
+	if (!windowClassId) DX3DLogErrorAndThrow("RegisterClassEx failed.");
 
 	RECT rc{ 0,0,1280,720 };
 	AdjustWindowRect(&rc, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU, false);
@@ -42,10 +39,8 @@ dx3d::Window::Window(const WindowDesc& desc)
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		rc.right - rc.left, rc.bottom - rc.top,
 		NULL, NULL, NULL, NULL);
-	if (!m_Handle) {
-		GetLogger().Log(Logger::LogLevel::Error, "CreateWindowEx failed.");
-		throw std::runtime_error("CreateWindowEx failed.");
-	} 
+
+	if (!m_Handle)DX3DLogErrorAndThrow("CreateWindowEx failed.");
 
 	ShowWindow(static_cast<HWND>(m_Handle), SW_SHOW);
 }
