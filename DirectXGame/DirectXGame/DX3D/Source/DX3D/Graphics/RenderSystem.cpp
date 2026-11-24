@@ -1,5 +1,7 @@
 #include <DX3D/Graphics/RenderSystem.h>
 #include <DX3D/Graphics/GraphicsLogUtils.h>
+#include <DX3D/Graphics/SwapChain.h>
+using namespace dx3d;
 
 dx3d::RenderSystem::RenderSystem(const RenderSystemDesc& desc)
 	:Base(desc.base)
@@ -16,8 +18,32 @@ dx3d::RenderSystem::RenderSystem(const RenderSystemDesc& desc)
 		&m_D3dDevice, &featureLevel, &m_D3dContext),
 		"Direct3D11 initialization failed.");
 
+	DX3DGrraphicsLogErrorAndThrow(
+		m_D3dDevice->QueryInterface(IID_PPV_ARGS(&m_DxgiDevice)),
+		"QueryInterface failed to retrieve IDXGIDevice."
+	);
+	DX3DGrraphicsLogErrorAndThrow(
+		m_DxgiDevice->GetParent(IID_PPV_ARGS(&m_DxgiAdapter)),
+		"QueryInterface failed to retrieve IDXGIAdapter."
+	);
+	DX3DGrraphicsLogErrorAndThrow(
+		m_DxgiAdapter->GetParent(IID_PPV_ARGS(&m_DxgiFactory)),
+		"QueryInterface failed to retrieve IDXGIFactory."
+	);
+
+	//m_DxgiFactory->CreateSwapChain()
 }
 
 dx3d::RenderSystem::~RenderSystem() {
 
+}
+
+SwapChainPtr dx3d::RenderSystem::CreateSwapChain(const SwapChainDesc& desc)
+{
+	return std::make_shared<SwapChain>(desc, GetGraphicsResourceDesc());
+}
+
+GraphicsResourceDesc dx3d::RenderSystem::GetGraphicsResourceDesc() const
+{
+	return { {m_Logger}, *m_D3dDevice.Get(), *m_DxgiFactory.Get() };
 }
