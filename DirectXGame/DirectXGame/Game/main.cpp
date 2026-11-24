@@ -1,0 +1,20 @@
+//#include <iostream>
+#include <DX3D/All.h>
+
+int main() {
+	try {
+		dx3d::Game game{{dx3d::Logger::LogLevel::Info} };
+		game.Run();
+	}
+	catch (const std::runtime_error&) {
+		return EXIT_FAILURE;
+	}
+	catch (const std::exception&) {
+		return EXIT_FAILURE;
+	}
+	catch (...) {
+		return EXIT_FAILURE;
+	}
+	//std::cout << "Hello world!\n";
+	return 0;
+}
