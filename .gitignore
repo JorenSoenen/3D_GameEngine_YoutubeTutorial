@@ -1,0 +1,16 @@
+# Visual Studio
+.vs/
+.vscode/
+
+# Build files
+Debug/
+Release/
+x64/
+x86/
+
+# Compiled files
+*.obj
+*.exe
+*.dll
+*.pdb
+*.ipch
