@@ -12,6 +12,7 @@ namespace dx3d {
 
 	class Logger;
 	class SwapChain;
+	class Display;
 
 	using i32 = int;
 	using ui32 = unsigned int;

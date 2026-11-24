@@ -6,15 +6,15 @@
 #include <wrl.h>
 
 namespace dx3d {
-	class RenderSystem : public Base {
+	class RenderSystem : public Base, public std::enable_shared_from_this<RenderSystem> {
 	public:
 		explicit RenderSystem(const RenderSystemDesc& desc);
 		virtual ~RenderSystem() override;
 
-		SwapChainPtr CreateSwapChain(const SwapChainDesc& desc);
+		SwapChainPtr CreateSwapChain(const SwapChainDesc& desc) const;
 
 	private:
-		GraphicsResourceDesc GetGraphicsResourceDesc() const;
+		GraphicsResourceDesc GetGraphicsResourceDesc() const noexcept;
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Device> m_D3dDevice{};

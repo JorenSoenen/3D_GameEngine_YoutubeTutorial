@@ -30,20 +30,18 @@ dx3d::RenderSystem::RenderSystem(const RenderSystemDesc& desc)
 		m_DxgiAdapter->GetParent(IID_PPV_ARGS(&m_DxgiFactory)),
 		"QueryInterface failed to retrieve IDXGIFactory."
 	);
-
-	//m_DxgiFactory->CreateSwapChain()
 }
 
 dx3d::RenderSystem::~RenderSystem() {
 
 }
 
-SwapChainPtr dx3d::RenderSystem::CreateSwapChain(const SwapChainDesc& desc)
+SwapChainPtr dx3d::RenderSystem::CreateSwapChain(const SwapChainDesc& desc) const
 {
 	return std::make_shared<SwapChain>(desc, GetGraphicsResourceDesc());
 }
 
-GraphicsResourceDesc dx3d::RenderSystem::GetGraphicsResourceDesc() const
+GraphicsResourceDesc dx3d::RenderSystem::GetGraphicsResourceDesc() const noexcept
 {
-	return { {m_Logger}, *m_D3dDevice.Get(), *m_DxgiFactory.Get() };
+	return { {m_Logger}, shared_from_this(), *m_D3dDevice.Get(), *m_DxgiFactory.Get()};
 }
